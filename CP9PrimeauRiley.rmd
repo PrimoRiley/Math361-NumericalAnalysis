@@ -1,0 +1,151 @@
+---
+title: "Class Prep 10 | 5.2.1 – 5.3.2"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 5.2.1 Multipanel Interpolation Rules
+
+```{r}
+midpt = function(f, a, b, m = 100) {
+  nwidth = (b-a)/m
+  x = seq(a, b - nwidth, length.out = m) + nwidth/2
+  y = f(x)
+  
+  area = sum(y) * abs(b-a)/m
+  return(area)
+}
+
+f = function(x) {x^2}
+midpt(f, 0, 1, m =2)
+midpt(f, 0, 1, m=10)
+midpt(f, 0, 1, m=100)
+midpt(f, 0, 1, m=1000)
+
+```
+
+
+```{r}
+simp = function(f, a, b, m=100){
+  x.ends = seq(a, b, length.out = m+1)
+  y.ends = f(x.ends)
+  x.mids = (x.ends[2:(m+1)] - x.ends[1:m])/2 + x.ends[1:m]
+  y.mids = f(x.mids)
+  
+  p.area = sum(y.ends[2:(m+1)] + 4 * y.mids[1:m] + y.ends[1:m])
+  p.area = p.area * abs(b-a)/(6*m)
+  return(p.area)
+}
+
+library(cmna)
+# simp38 = function(f, a, b, m=100){
+#   x.ends = seq(a, b, length.out = m+1)
+#   y.ends = f(x.ends)
+#   x.midh = (2 * x.ends[2:(m+1)] + x.ends[1:m])/3
+#   x.midl = (x.ends[2:(m+1)] + 2 * x.ends[1:m])/2
+#   y.midh = f(x.midh)
+#   y.midl = f(x.midl)
+#   
+#   p.area = sum(y.ends[2:(m+1)] + 3 * y.midh[1:m] + 3 * y.midl[1:m] + y.ends[1:m])
+#   p.area = p.area * abs(b-a)/(8*m)
+#   
+#   return(p.area)
+# }
+
+f = function(x) {x^2}
+midpt(f, 0, 1, m =1)
+trap(f, 0, 1, m =1)
+simp(f, 0, 1, m =1)
+simp38(f, 0, 1, m =1)
+
+
+f = function(x) {x^4 - x^2 + 1}
+midpt(f, 0, 1, m =1)
+trap(f, 0, 1, m =1)
+simp(f, 0, 1, m =1)
+simp38(f, 0, 1, m =1)
+
+f = function(x) {sin(x) + cos(x)}
+midpt(f, 0, pi, m =10)
+trap(f, 0, pi, m =10)
+simp(f, 0, pi, m =10)
+simp38(f, 0, pi, m =10)
+
+simp(f, 0, pi, m =2)
+simp(f, 0, pi, m =5)
+simp(f, 0, pi, m =10)
+simp(f, 0, pi, m =100)
+
+# getting different results with the simp38 function then in the text
+# using it from the cmna library recieves gives the same results so it
+# is not an issue with my definition...
+
+simp38(f, 0, pi, m =2)
+simp38(f, 0, pi, m =5)
+simp38(f, 0, pi, m =10)
+simp38(f, 0, pi, m =100)
+simp38(f, 0, pi, m =1000) 
+
+```
+
+## Section 5.2.2 Newton-Cotes Errors
+
+No code in section.
+
+## Section 5.2.3 Newton-Cotes Forms, Generally
+
+```{r}
+trap(log, 0, 1, m=10)
+simp(log, 0, 1, m=10)
+
+midpt(f, 0, 1, m=10)
+midpt(f, 0, 1, m=100)
+midpt(f, 0, 1, m=1000)
+      
+f = function(x) { 1/x }
+trap(f, 0, 1, m=100)
+
+midpt(f, 0, 1, m=10)
+midpt(f, 0, 1, m=100)
+midpt(f, 0, 1, m=1000)
+```
+
+## Section 5.3.1 The Gaussian Method
+
+```{r}
+gaussint = function(f, x, w){
+  y = f(x)
+  
+  return(sum(y*w))
+}
+```
+
+## Section 5.3.2 Implementation Details
+
+```{r}
+w = c(1,1)
+x = c(-1/sqrt(3), 1/sqrt(3))
+f = function(x) {x^3 + x + 1}
+
+gaussint(f, x, w)
+trap(f, -1, 1, m=1)
+
+gaussint(cos, x, w)
+trap(cos, -1, 1, m=1)
+
+gauss.legendre = function(f, m=5){
+  p = paste("gauss.legendre.", m, sep = " ")
+  params = eval(parse(text = p))
+  
+  return(gaussint(f, params$x, params$w))
+}
+```
+
+

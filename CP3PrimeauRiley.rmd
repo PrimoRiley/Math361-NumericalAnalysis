@@ -1,0 +1,74 @@
+---
+title: "Class Prep 3 | 2.2.1 – 2.2.2"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 2.2.1 Binary Numbers
+
+```{r}
+as.integer(2^31 - 2)
+as.integer(2^31 - 1)
+as.integer(2^31)
+```
+
+```{r}
+-2147483646L
+-2147483646L - 1L
+-2147483646L - 2L
+-2147483646L
+```
+
+```{r}
+as.integer(0.5)
+as.integer(1.9)
+```
+
+```{r}
+0xFACE
+2^32
+class(2^36)
+```
+
+
+## Section 2.2.2 Floating Point Numbers
+
+```{r}
+2^31
+2^40
+```
+
+```{r}
+0/0
+NaN == NaN
+sqrt(-1)
+Inf - Inf
+Inf + Inf
+
+c(1, 2, 3, 4, NA, 5, 6)
+matrix(c(1, 2, NA, 4, NA, 6, NA, 8, 9), 3)
+
+1/0
+1/Inf
+Inf/Inf
+Inf == Inf
+Inf == -Inf
+Inf > 100
+Inf < 100
+-Inf > 100
+1/-0
+-0
+1 / -Inf
+1/sqrt(-0)
+
+```
+
+
+

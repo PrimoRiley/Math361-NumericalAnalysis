@@ -1,0 +1,94 @@
+---
+title: "Class Prep 8 | 4.1.1 – 4.2.1"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 4.1.1 Linear Interpolation
+
+```{r}
+linterp = function (x1, y1, x2, y2)
+{
+  m = (y2-y1)/(x2 - x1)
+  b = y2 - m * x2
+  
+  return(c(b,m))
+}
+(p = linterp(2,3,0,-1))
+
+library(cmna)
+horner(1,p)
+```
+
+## Section 4.1.2 Higher-Order Polynomial Interpolation
+
+```{r}
+polyinterp = function(x, y)
+{
+  if(length(x) != length(y))
+    stop("Length of x and y vectors must be the same")
+  n = length(x) -1
+  vandermonde = rep(1, length(x))
+  for(i in 1:n)
+  {
+    xi = x^i
+    vandermonde = cbind(vandermonde, xi)
+  }
+  beta = solve(vandermonde, y)
+  
+  names(beta) = NULL
+  return(beta)
+}
+
+x = c(-1, 1, 0)
+y = c(-2, 2, -1)
+(p = polyinterp(x, y))
+
+horner(-2, p)
+
+x = c(2,0)
+y = c(3,-1)
+(p = polyinterp(x, y))
+
+x = c(-3, -1, 3, 1)
+y = c(1 - tan(1), 1 - tan(1/2), 1 + tan(1/2), 1)
+(p = polyinterp(x, y))
+```
+
+## Section 4.2.1 Piecewise Linear Interpolation
+
+```{r}
+pwiselinterp = function(x,y)
+{
+  n = length(x) - 1
+  
+  y = y[order(x)]
+  x = x[order(x)]
+  
+  mvec = bvec = c()
+  
+  for(i in 1:n) {
+    p = linterp(x[i], y[i], x[i+1], y[i+1])
+    mvec = c(mvec, p[2])
+    bvec = c(bvec, p[1])
+  }
+  return(list(m = mvec, b = bvec))
+}
+
+x = c(-2, -1, 0, 1)
+y = c(-1, -2, -1, 2)
+pwiselinterp(x, y)
+
+
+
+f = approxfun(x, y)
+f(0)
+f(.5)
+```

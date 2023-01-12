@@ -1,0 +1,38 @@
+---
+title: "Class Prep 4 | 2.3.1"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 2.3.1 Round Off Error and Machine $\epsilon$
+
+```{r}
+.Machine$double.eps
+print(1 + .Machine$double.eps, digits = 20)
+print(1 + .Machine$double.eps * 2, digits = 20)
+print(1 + .Machine$double.eps/2, digits = 20)
+```
+
+```{r}
+.Machine$double.neg.eps
+print(1 - .Machine$double.neg.eps, digits = 20)
+print(1 - .Machine$double.neg.eps * 2, digits = 20)
+print(1 - .Machine$double.neg.eps/2, digits = 20)
+print(1000 + .Machine$double.neg.eps, digits = 20)
+```
+
+```{r}
+library(pracma)
+eps(1000)
+eps(1000000)
+eps(1000000000)
+
+```
+

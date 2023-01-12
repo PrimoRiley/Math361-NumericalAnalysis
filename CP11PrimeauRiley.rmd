@@ -1,0 +1,63 @@
+---
+title: "Class Prep 10 | 6.1.1"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 6.1.1 Bisection Method
+
+```{r}
+bisection = function(f, a, b, tol = 1e-3, m = 100)
+{
+  iter = 0
+  f.a = f(a)
+  f.b = f(b)
+  
+  while(abs(b - a) > tol)
+  {
+    iter = iter + 1
+    if(iter > m)
+    {
+      warning("iteration maximum exceeded")
+      break
+    }
+    xmid = (a+b)/2
+    ymid = f(xmid)
+    if(f.a * ymid > 0)
+    {
+      a = xmid
+      f.a = ymid
+    }else{
+      b = xmid
+      f.b = ymid
+    }
+  }
+  root = (a+b)/2
+  return(root)
+}
+
+f = function(x) {x^2 - 1}
+bisection(f, .5, 1.25, tol=1e-3)
+bisection(f, .5, 1.25, tol=1e-6)
+bisection(f, .5, 1.25, tol=1e-9)
+
+f = function(x){x^3 - x}
+bisection(f, -2, 1.25, tol=1e-6)
+bisection(f, -.5, 1.25, tol=1e-6)
+bisection(f, -2, 1.25, tol=1e-6) # is this a typo? its the same as the first
+
+bisection(sin, 1, 7, tol=1e-6)
+bisection(sin, -50, 100, tol=1e-6)
+bisection(sin, -1000, 2000, tol=1e-6)
+
+bisection(tan, 1, 2)
+bisection(tan, -1, 1)
+```
+

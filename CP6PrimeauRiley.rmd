@@ -1,0 +1,111 @@
+---
+title: "Class Prep 6 | 2.4.1 - 3.1.1"
+author: "Riley Primeau"
+date: '`r Sys.Date()`'
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Section 2.4.1 Simple Division Algorithms
+
+```{r}
+naivediv = function(m, n){
+  quot = 0
+  r = m 
+  
+  if(n==0)
+    stop("Attempted division by 0")
+  
+  while( r>= n) {
+    quot = quot + 1
+    r = r - n
+  }
+  return(list(quotient = quot, remander = r))
+}
+```
+
+```{r}
+naivediv(314, 7)
+
+floor(314/7)
+314%%7
+```
+
+```{r}
+longdiv = function(m, n){
+  quot = 0
+  r = 0
+  
+  if(n == 0)
+    stop("Attempted division by 0")
+  
+  for(i in 31:0){
+    r = bitwShiftL(r,1)
+    r = r + bitwAnd(bitwShiftR(m,i), 1)
+    if(r >= n) {
+      r = r - n
+      quot = quot + bitwShiftL(1, i)
+    }
+  }
+  return(list(quotient = quot, remainder = r))
+}
+
+
+longdiv(314, 7)
+```
+
+## Section 3.1.1 Vector and Matrix Operations
+
+```{r}
+u = c(1, 2, 3); v = c(8, 4, 2); x = 7
+u + x
+u + v
+
+u + c(1,9)
+```
+
+```{r}
+A = matrix(1:9, 3)
+A + 1
+A + c(1, 2, 3)
+
+A + 1
+A + c(1,2) - A
+A + c(1, 2, 3) - A
+
+
+B = matrix(1:6, 3)
+status = try(A+B)
+print(status[1])
+
+A %*% B
+u %*% v
+```
+
+```{r}
+diag(A)
+diag(B)
+
+diag(u)
+     
+diag(1,4)
+```
+
+```{r}
+nrow(B)
+ncol(B)
+
+nrow(u)
+ncol(u)
+
+length(u)
+length(B)
+
+dim(B)
+```
+
